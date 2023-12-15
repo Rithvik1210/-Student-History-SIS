@@ -10,14 +10,19 @@ API Name: getStudentDemographicInfo_V6142
 Test Scripts:Spriden
 
 select * from spriden where spriden_id='SYNTICU01' and spriden_change_ind is null;
+
 Spbpers
 select * from spbpers where spbpers_pidm=1;
+
 3. Sgbstdn
 Select * from sgbstdn where sgbstdn_pidm=1;
+
 4. Shrdgmr
 select * from shrdgmr where shrdgmr_pidm=1;
+
 5. Smrprle
 select * from SMRPRLE where smrprle_levl_code='PR';
+
 6. Join of spriden and spbpers
 select SPRIDEN_ID as Student_id,
 SPRIDEN_FIRST_NAME as Full_Name,
@@ -28,6 +33,7 @@ on
 a.spriden_pidm=b.spbpers_pidm
 and spriden_change_ind is null
 and spriden_id='SYNTICU01';
+
 7. Join of Spriden, Spbpers, Sgbstdn with max condition of term code eff
 select SPRIDEN_ID as Student_id,
 SPRIDEN_FIRST_NAME as Full_Name,
@@ -51,6 +57,7 @@ and c.sgbstdn_term_code_eff=
 from sgbstdn sg
 where sg.sgbstdn_pidm = c.sgbstdn_pidm)
 and SPRIDEN_ID='SYNTICU01';
+
 8. Join of spriden, spbpers, sgbstdn, shrdgmr with max condition of sequence number
 select SPRIDEN_ID as Student_id,
 SPRIDEN_FIRST_NAME as Full_Name,
@@ -81,6 +88,7 @@ and d.shrdgmr_seq_no=
 from shrdgmr sh
 where sh.shrdgmr_pidm=d.shrdgmr_pidm)
 and SPRIDEN_ID='SYNTICU01';
+
 9. Join of all tables
 select SPRIDEN_ID as Student_id,
 SPRIDEN_FIRST_NAME as Full_Name,
