@@ -1,0 +1,20 @@
+Overview
+This document contains all of the information required to comprehend the newly developed APIs.
+
+The APIs flow follows:
+
+Get And Load Academic History
+Get Academic History
+Validate the input parameters for academic history
+Student's demographic information
+Term GPA
+Student's Level GPA History
+Academic course history details
+Transfer Courses History
+ 
+2. Load Academic Master Details
+3. Load Demographic Details
+4. Load Term GPA Details
+5. Load Level GPA Details
+6. Academic Courses Details
+7. Load Transfer Courses
