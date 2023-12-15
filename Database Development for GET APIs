@@ -1,0 +1,487 @@
+Objective:
+To Get the academic history data from the banner database based on the requirement.
+Development Flow:
+Research and Analysis:
+To Get all the information from the Banner database, initially started with identifying the tables for the requirement and writing plain queries for a single student
+Sample plain queries:
+select * from SPRIDEN where spriden_id='N00051601' and spriden_change_ind is null;
+select * from SGBSTDN where sgbstdn_pidm=77378;
+select * from SPBPERS where spbpers_pidm=77378;
+select * from SHRDGMR where shrdgmr_pidm=77378;
+select * from SHRTGPA where shrtgpa_pidm=77378;
+select * from SHRLGPA where shrlgpa_pidm=77378;
+select * from SHRTCKL where shrtckl_pidm=77378;
+select * from SHRTCKN where shrtckn_pidm=77378;
+select * from SHRTCKG where shrtckg_pidm=77378;
+select * from SHRGRDE where shrgrde_pidm=77378;
+select * from SHRTRCR where shrtrcr_pidm=77378;
+select * from SHRTRCE where shrtrce_pidm=77378;
+ 
+After this, we identified the columns, primary keys, and relationships between the tables and then started developing the queries for all the academic history entities.
+Eg:
+Table: SHRTCKN
+Table: SGBSTDN
+ 
+Demographic Information of the Student:
+Required Fields Identified from the Banner Database:
+SPRIDEN_ID
+StudentId
+SPRIDEN_FIRST_NAME, SPRIDEN_LAST_NAME
+FullName
+SPBPERS_BIRTH_DATE
+DateOfBirth
+SGBSTDN_LEVL_CODE
+LevelCode
+STVLEVL_DESC
+LevelDesc
+SGBSTDN_COLL_CODE_1
+CollegeCode
+STVCOLL_DESC
+College
+SGBSTDN_DEPT_CODE
+DeptCode
+STVDEPT_DESC
+Department
+SHRDGMR_DEGC_CODE
+DegreeCode
+STVDEGC_DESC
+Degree
+SGBSTDN_TERM_CODE_ADMIT
+AdmitTerm
+SGBSTDN_MAJR_CODE_1
+MajorCode
+STVMAJR_DESC
+Major
+SGBSTDN_MAJR_CODE_MINR_1
+Minor
+SMRPRLE_PROGRAM_DESC
+Program
+SGBSTDN_MAJR_CODE_2, STVMAJR_DESC, SGBSTDN_DEPT_CODE_2, STVDEPT_DESC
+MajorDepartment2
+
+ 
+Created view to get the demographic information of the student from the Banner Database:
+View: n2n_practice.student_demographic_info_tt
+-----------------------------------------------
+create or replace view student_demographic_info_tt as
+select iden.spriden_id as student_id,
+iden.spriden_first_name || ' ' || iden.spriden_last_name as full_name,
+(select s.spbpers_birth_date
+from spbpers s
+where s.spbpers_pidm = stdn.sgbstdn_pidm) as date_of_birth,
+stdn.sgbstdn_levl_code level_code,
+baninst1.f_get_desc_fnc('STVLEVL', stdn.sgbstdn_levl_code, 50) as student_level,
+baninst1.f_get_desc_fnc('STVCOLL', stdn.sgbstdn_coll_code_1, 50) as college,
+baninst1.f_get_desc_fnc('STVDEPT', stdn.sgbstdn_dept_code, 50) as department,
+baninst1.f_get_desc_fnc('STVDEGC', ed.shrdgmr_degc_code, 50) as degree_code,
+stvdegs_desc as degree_code_desc,
+stdn.sgbstdn_term_code_admit admit_term,
+baninst1.f_get_desc_fnc('STVMAJR', stdn.sgbstdn_majr_code_1, 50) as major,
+baninst1.f_get_desc_fnc('STVMAJR', stdn.sgbstdn_majr_code_minr_1, 50) as minor,
+prog.smrprle_program_desc program,
+prog2.smrprle_program_desc program2,
+baninst1.f_get_desc_fnc('STVMAJR', stdn.sgbstdn_majr_code_2, 50) || ' ' ||
+baninst1.f_get_desc_fnc('STVDEPT', stdn.sgbstdn_dept_code_2, 50) as major_department2
+from spriden iden
+join sgbstdn stdn
+on iden.spriden_pidm = stdn.sgbstdn_pidm
+and spriden_change_ind is null
+and stdn.sgbstdn_term_code_eff =
+(select max(sg.sgbstdn_term_code_eff)
+from sgbstdn sg
+where sg.sgbstdn_pidm = stdn.sgbstdn_pidm)
+left join (select shrdgmr_pidm,
+shrdgmr_seq_no,
+shrdgmr_degc_code,
+shrdgmr_degs_code
+from (select e.*,
+max(shrdgmr_seq_no) over(partition by e.shrdgmr_pidm) max_seq_no
+from shrdgmr e)
+where shrdgmr_seq_no = max_seq_no) ed
+on ed.shrdgmr_pidm = stdn.sgbstdn_pidm
+left join shrdgih b
+on b.shrdgih_pidm = gb_common.f_get_pidm(iden.spriden_id)
+and b.shrdgih_dgmr_seq_no = ed.shrdgmr_seq_no
+left join stvdegs s
+on ed.shrdgmr_degs_code = s.stvdegs_code
+left join SMRPRLE prog
+on prog.smrprle_program = stdn.sgbstdn_program_1
+left join smrprle prog2
+on prog2.smrprle_program = stdn.sgbstdn_program_2;
+Query used in Illuminate for API: getStudentDemographicInfo_V6142
+SELECT student_id,
+full_name,
+date_of_birth,
+level_code,
+student_level,
+college,
+department,
+degree_code,
+degree_code_desc,
+admit_term,
+major,
+minor,
+program,
+program2,
+major_department2
+FROM n2n_practice.student_demographic_info_tt sdi
+WHERE sdi.student_id = nvl(& student_id, sdi.student_id) COLLATE BINARY_CI
+AND sdi.admit_term = nvl(& term_code, sdi.admit_term) COLLATE BINARY_CI
+AND sdi.level_code = nvl(& level_code, sdi.level_code) COLLATE BINARY_CI
+ORDER BY sdi.student_id;
+Term Code GPA of the Student:
+Required Fields Identified from the Banner Database:
+SPRIDEN_ID
+StudentId
+SHRTGPA_LEVL_CODE
+LevelCode
+STVLEVL_DESC
+LevelCodeDesc
+SHRTGPA_TERM_CODE
+TermCode
+STVTERM_DESC
+TermCodeDesc
+SHRTGPA_GPA_TYPE_IND
+GPAType(I-Institutional, T-Transfer, O-Overall)
+SHRTGPA_GPA_HOURS
+TermGPAHours
+SHRTGPA_TERM_QUALITY_POINTS
+TermQualityPoints
+SHRTGPA_GPA
+TermGPA
+SHRTGPA_HOURS_ATTEMPTED
+TermHoursAttempted
+
+ 
+Created view to get the term code GPA of the student from the Banner Database:
+View: n2n_practice.student_term_gpa_history_tt
+-----------------------------------------------
+create or replace view student_term_gpa_history_tt as
+select iden.spriden_id as student_id,
+tgpa.shrtgpa_levl_code as level_code,
+baninst1.f_get_desc_fnc('STVLEVL', tgpa.shrtgpa_levl_code, 50) as level_code_desc,
+tgpa.shrtgpa_term_code as term_code,
+baninst1.f_get_desc_fnc('STVTERM', tgpa.shrtgpa_term_code, 50) as term_code_desc,
+tgpa.shrtgpa_gpa_type_ind gpa_type,
+decode(tgpa.shrtgpa_gpa_type_ind,
+'I',
+'Institution',
+'T',
+'Transfer',
+'O',
+'Overall') as gpa_type_desc,
+tgpa.shrtgpa_gpa_hours as term_gpa_hours,
+tgpa.shrtgpa_quality_points as term_quality_points,
+tgpa.shrtgpa_gpa as term_gpa,
+tgpa.shrtgpa_hours_attempted as term_hours_attempted
+from spriden iden
+join shrtgpa tgpa
+on iden.spriden_pidm = tgpa.shrtgpa_pidm
+and iden.spriden_change_ind is null
+left outer join shrtrit trit
+on trit.shrtrit_pidm = tgpa.shrtgpa_pidm
+and trit.shrtrit_seq_no = tgpa.shrtgpa_trit_seq_no
+left outer join stvlevl levl
+on levl.stvlevl_code = tgpa.shrtgpa_levl_code
+left outer join stvterm term
+on term.stvterm_code = tgpa.shrtgpa_term_code
+left outer join stvacyr acyr
+on acyr.stvacyr_code = substr(tgpa.shrtgpa_term_code, 1, 4);
+ Query used in Illuminate for API: getTermGPAHistory_V615
+SELECT student_id,
+level_code,
+level_code_desc,
+term_code,
+term_code_desc,
+gpa_type,
+gpa_type_desc,
+term_gpa_hours,
+term_quality_points,
+term_gpa,
+term_hours_attempted
+FROM n2n_practice.student_term_gpa_history_tt tgpa
+WHERE tgpa.student_id = nvl(& student_id, tgpa.student_id) COLLATE BINARY_CI
+AND tgpa.term_code = nvl(& term_code, tgpa.term_code) COLLATE BINARY_CI
+AND tgpa.level_code = nvl(& level_code, tgpa.level_code) COLLATE BINARY_CI
+ORDER BY tgpa.student_id;
+ 
+Level Code GPA of the Student:
+Required Fields Identified from the Banner Database:
+SPRIDEN_ID
+StudentId
+SHRLGPA_LEVL_CODE
+LevelCode
+STVLEVL_DESC
+LevelCodeDesc
+SHRLGPA_GPA_TYPE_IND
+GPAType(I-Institutional, T-Transfer, O-Overall)
+SHRLGPA_HOURS_ATTEMPTED
+LevelHoursAttempted
+SHRLGPA_HOURS_EARNED
+LevelHoursEarned
+SHRLGPA_HOURS_PASSED
+LevelHoursPassed
+SHRLGPA_GPA_HOURS
+LevelGPAHours
+SHRLGPA_QUALITY_POINTS
+LevelQualityPoints
+SHRLGPA_GPA
+LevelGPA
+
+ 
+Created view to get the level code GPA of the student from the Banner Database:
+View: n2n_practice.student_level_code_gpa_tt
+---------------------------------------------
+create or replace view student_level_code_gpa_tt as
+select iden.spriden_id as student_id,
+lgpa.shrlgpa_levl_code as level_code,
+baninst1.f_get_desc_fnc('STVLEVL', lgpa.shrlgpa_levl_code, 20) as level_code_desc,
+null term_code,
+null term_code_desc,
+lgpa.shrlgpa_gpa_type_ind as gpa_type,
+decode(lgpa.shrlgpa_gpa_type_ind,
+'I',
+'Institution',
+'T',
+'Transfer',
+'O',
+'Overall') as gpa_type_desc,
+lgpa.shrlgpa_hours_attempted as level_hours_attempted,
+lgpa.shrlgpa_hours_earned as level_hours_earned,
+lgpa.shrlgpa_hours_passed as level_hours_passed,
+lgpa.shrlgpa_gpa_hours as level_gpa_hours,
+lgpa.shrlgpa_quality_points as level_quality_points,
+lgpa.shrlgpa_gpa as level_gpa
+from spriden iden
+join shrlgpa lgpa
+on lgpa.shrlgpa_pidm = iden.spriden_pidm
+and iden.spriden_change_ind is null
+left outer join stvlevl levl
+on levl.stvlevl_code = lgpa.shrlgpa_levl_code;
+ Query used in Illuminate for API: getStudentLevelGPAHistory_V614
+SELECT student_id,
+level_code,
+level_code_desc,
+gpa_type,
+gpa_type_desc,
+level_hours_attempted,
+level_hours_earned,
+level_hours_passed,
+level_gpa_hours,
+level_quality_points,
+level_gpa
+FROM n2n_practice.student_level_code_gpa_tt lcg
+WHERE lcg.student_id = nvl(& student_id, lcg.student_id) COLLATE BINARY_CI
+AND lcg.level_code = nvl(& level_code, lcg.level_code) COLLATE BINARY_CI
+ORDER BY lcg.student_id;
+ 
+Institutional Academic Course History of the Student:
+Required Fields Identified from the Banner Database:
+SPRIDEN_ID
+StudentId
+SHRTCKL_LEVL_CODE
+LevelCode
+STVLEVL_DESC
+LevelDesc
+SHRTCKN_TERM_CODE
+TermCode
+STVTERM_DESC
+TermDesc
+SHRTCKN_SUBJ_CODE
+Subject
+STVSUBJ_DESC
+SubjectDesc
+SHRTCKN_CRSE_NUMB
+CourseNumber
+SHRTCKN_CRSE_TITLE
+CourseTitle
+SHRTCKN_COURSE_COMMENT
+CourseComment
+SHRTCKG_GRDE_CODE_FINAL
+FinalGrade
+SHRTCKG_CREDIT_HOURS
+CreditHours
+SHRGRDE_QUALITY_POINTS
+QualityPoints
+SHRTCKN_REPEAT_COURSE_IND
+CourseRepeat
+
+ 
+Created view to get the academic course history of the student from the Banner Database:
+View: n2n_practice.academic_courses_history_tt
+-----------------------------------------------
+create or replace view academic_courses_history_tt as
+select iden.spriden_id as student_id,
+tckl.shrtckl_levl_code as level_code,
+baninst1.f_get_desc_fnc('STVLEVL', tckl.shrtckl_levl_code, 20) as level_desc,
+tckn.shrtckn_term_code as term_code,
+baninst1.f_get_desc_fnc('STVTERM', tckn.shrtckn_term_code, 20) as term_desc,
+tckn.shrtckn_subj_code as subject,
+baninst1.f_get_desc_fnc('STVSUBJ', tckn.shrtckn_subj_code, 20) as subject_desc,
+tckn.shrtckn_crse_title as course_title,
+tckn.shrtckn_course_comment as course_comment,
+tckg.shrtckg_grde_code_final as final_grade,
+tckg.shrtckg_credit_hours as credit_hours,
+(tckg.shrtckg_credit_hours * ed.shrgrde_quality_points) as quality_points,
+tckn.shrtckn_repeat_course_ind as course_repeat,
+tckn.shrtckn_coll_code as college_code,
+baninst1.f_get_desc_fnc('STVCOLL', tckn.shrtckn_coll_code, 30) as college_name
+from spriden iden
+inner join shrtckn tckn
+on iden.spriden_pidm = tckn.shrtckn_pidm
+and iden.spriden_change_ind is null
+inner join shrtckl tckl
+on tckn.shrtckn_pidm = tckl.shrtckl_pidm
+and tckn.shrtckn_term_code = tckl.shrtckl_term_code
+and tckn.shrtckn_seq_no = tckl.shrtckl_tckn_seq_no
+inner join shrtckg tckg
+on tckg.shrtckg_pidm = tckn.shrtckn_pidm
+and tckg.shrtckg_term_code = tckn.shrtckn_term_code
+and tckg.shrtckg_tckn_seq_no = tckn.shrtckn_seq_no
+and tckg.shrtckg_seq_no =
+(select max(g.shrtckg_seq_no)
+from shrtckg g
+where g.shrtckg_pidm = tckg.shrtckg_pidm
+and g.shrtckg_term_code = tckg.shrtckg_term_code
+and g.shrtckg_tckn_seq_no = tckg.shrtckg_tckn_seq_no)
+/*left join shrgrde grde
+on grde.shrgrde_code = tckg.shrtckg_grde_code_final
+and grde.shrgrde_levl_code = tckl.shrtckl_levl_code
+and grde.shrgrde_term_code_effective =
+(select max(e.shrgrde_term_code_effective)
+from shrgrde e
+where e.shrgrde_code = grde.shrgrde_code
+and e.shrgrde_levl_code = grde.shrgrde_levl_code)*/
+left join (select shrgrde_code,
+shrgrde_levl_code,
+shrgrde_quality_points,
+shrgrde_term_code_effective
+from (select e.*,
+max(e.shrgrde_term_code_effective) over(PARTITION BY e.shrgrde_code, e.shrgrde_levl_code) max_term_code_eff
+from shrgrde e)
+where shrgrde_term_code_effective = max_term_code_eff) ed
+on ed.shrgrde_code = tckg.shrtckg_grde_code_final
+and ed.shrgrde_levl_code = tckl.shrtckl_levl_code;
+Query used in Illuminate for API: getAcademicCourseHistory_V63
+SELECT student_id,
+level_code,
+level_desc,
+term_code,
+term_desc,
+subject,
+subject_desc,
+course_title,
+course_comment,
+final_grade,
+credit_hours,
+quality_points,
+course_repeat,
+college_code,
+college_name
+FROM n2n_practice.academic_courses_history_tt ach
+WHERE student_id = nvl(& student_id, ach.student_id) COLLATE BINARY_CI
+AND term_code = nvl(& term_code, ach.term_code) COLLATE BINARY_CI
+AND level_code = nvl(& level_code, ach.level_code) COLLATE BINARY_CI
+ORDER BY ach.student_id;
+ 
+Transfer Course History of the Student:
+Required Fields Identified from the Banner Database:
+SPRIDEN_ID
+StudentId
+SHRTRCR_TERM_CODE
+TermCode
+STVTERM_DESC
+TermDesc
+SHRTRCE_SUBJ_CODE
+Subject
+STVSUBJ_DESC
+SubjectDesc
+SHRTRCE_CRSE_NUMBER
+Course
+SHRTRCE_CRSE_TITLE
+CourseTitle
+SHRTRCR_LEVL_CODE
+LevelCode
+STVLEVL_DESC
+LevelDesc
+SHRTRCE_GRDE_CODE
+FinalGrade
+SHRTRCE_CREDIT_HOURS
+CreditHours
+SHRTRCE_REPEAT_COURSE
+RepeatCourse
+STVSBGI_DESC
+TransferInstitute
+
+ 
+Created view to get the transfer course history of the student from the Banner Database:
+View: n2n_practice.transfer_courses_history_tt
+----------------------------------------------
+create or replace view transfer_courses_history_tt as
+select iden.spriden_id as student_id,
+shrtrcr_term_code as term_code,
+baninst1.f_get_desc_fnc('STVTERM', shrtrcr_term_code, 20) as term_desc,
+trce.shrtrce_subj_code as subject,
+baninst1.f_get_desc_fnc('STVSUBJ', trce.shrtrce_subj_code, 20) as subject_desc,
+trce.shrtrce_crse_numb as course,
+trce.shrtrce_crse_title as course_title,
+trcr.shrtrcr_levl_code as level_code,
+baninst1.f_get_desc_fnc('STVLEVL', trcr.shrtrcr_levl_code, 20) as level_desc,
+trce.shrtrce_grde_code as final_grade,
+trce.shrtrce_credit_hours as credit_hours,
+trce.shrtrce_repeat_course as repeat_course,
+(select STVSBGI_DESC
+from stvsbgi
+where stvsbgi_code = trit.shrtrit_sbgi_code) as transfer_institute
+from shrtrcr trcr
+join shrtrce trce
+on trce.shrtrce_pidm = trcr.shrtrcr_pidm
+and trcr.shrtrcr_trit_seq_no = trce.shrtrce_trit_seq_no
+and trcr.shrtrcr_tram_seq_no = trce.shrtrce_tram_seq_no
+and trcr.shrtrcr_seq_no = trce.shrtrce_trcr_seq_no
+and trcr.shrtrcr_levl_code = trce.shrtrce_levl_code
+join shrtrit trit
+on trcr.shrtrcr_pidm = trit.shrtrit_pidm
+and trcr.shrtrcr_trit_seq_no = trit.shrtrit_seq_no
+join spriden iden
+on iden.spriden_pidm = shrtrcr_pidm
+and iden.spriden_change_ind is null
+/*left join shrgrde grde
+on grde.shrgrde_code = trce.shrtrce_grde_code
+and grde.shrgrde_levl_code = trcr.shrtrcr_levl_code
+and grde.shrgrde_activity_date =
+(select max(aa.shrgrde_activity_date)
+from shrgrde aa
+where aa.shrgrde_code = trce.shrtrce_grde_code
+and aa.shrgrde_levl_code = trcr.shrtrcr_levl_code);*/
+left join (select shrgrde_code,
+shrgrde_levl_code,
+shrgrde_activity_date
+from (select e.*,
+max(e.shrgrde_activity_date) over(PARTITION BY e.shrgrde_code, e.shrgrde_levl_code) max_activity_date
+from shrgrde e)
+where shrgrde_activity_date = max_activity_date) ed
+on ed.shrgrde_code = trce.shrtrce_grde_code
+and ed.shrgrde_levl_code = trcr.shrtrcr_levl_code;
+Query used in Illuminate for API: getTransferCourseHistory_V614
+SELECT student_id,
+term_code,
+term_desc,
+subject,
+subject_desc,
+course,
+course_title,
+level_code,
+level_desc,
+final_grade,
+credit_hours,
+repeat_course,
+transfer_institute
+FROM n2n_practice.transfer_courses_history_tt tch
+WHERE tch.student_id = nvl(& student_id, tch.student_id) COLLATE BINARY_CI
+AND tch.term_code = nvl(& term_code, tch.term_code) COLLATE BINARY_CI
+AND tch.level_code = nvl(& level_code, tch.level_code) COLLATE BINARY_CI
+ORDER BY tch.student_id;
+Conclusion: 
+Created GET APIs in illuminate using all these views and considered input parameters are student_id, term_code and level_code
+
