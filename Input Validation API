@@ -1,0 +1,126 @@
+To validate the parameters for the input to the IDW API: validateAcademicHistoryInput_V615
+
+Created package to validate the input parameters:
+create or replace package pkg_academic_history_validation is
+---************************************************************************************************************************
+-- Author : RITHVIK
+-- Created : 6/15/2023 10:27:20 AM
+-- Purpose : To validate the input parametrs for academic history IDW API
+---************************************************************************************************************************
+-- Public type declarations
+function f_get_pidm(p_id in varchar2) return number;
+function f_get_term(p_term in varchar2) return varchar2;
+function f_get_level(p_level in varchar2) return varchar2;
+procedure academic_history_validation(student_id spriden.spriden_id%TYPE default null,
+term_code stvterm.stvterm_code%TYPE default null,
+level_code stvlevl.stvlevl_code%TYPE default null,
+p_status out varchar2,
+p_status_msg out varchar2);
+end pkg_academic_history_validation;
+/
+create or replace package body pkg_academic_history_validation is
+function f_get_pidm(p_id in varchar2) return number is
+v_pidm number;
+begin
+--getting pidm from spriden table
+select distinct spriden_pidm
+into v_pidm
+from spriden
+where spriden_id = p_id COLLATE BINARY_CI
+and spriden_change_ind is null;
+return v_pidm;
+exception
+when others then
+return 0;
+end;
+function f_get_term(p_term in varchar2) return varchar2 is
+v_term varchar2(20);
+begin
+--getting pidm from spriden table
+select distinct stvterm_code
+into v_term
+from stvterm
+where stvterm_code = p_term COLLATE BINARY_CI;
+return v_term;
+exception
+when others then
+return null;
+end;
+function f_get_level(p_level in varchar2) return varchar2 is
+v_level varchar2(20);
+begin
+--getting pidm from spriden table
+select distinct stvlevl_code
+into v_level
+from stvlevl
+where stvlevl_code = p_level COLLATE BINARY_CI;
+return v_level;
+exception
+when others then
+return null;
+end;
+procedure academic_history_validation(student_id spriden.spriden_id%TYPE default null,
+term_code stvterm.stvterm_code%TYPE default null,
+level_code stvlevl.stvlevl_code%TYPE default null,
+p_status out varchar2,
+p_status_msg out varchar2) is
+v_pidm number := 0;
+v_term varchar2(20) := null;
+v_level varchar2(20) := null;
+begin
+v_pidm := f_get_pidm(student_id);
+if student_id is not null then
+if v_pidm = 0 then
+p_status := 'Failed';
+p_status_msg := 'Invalid Student Id';
+end if;
+end if;
+v_term := f_get_term(term_code);
+if term_code is not null then
+if v_term is null then
+p_status := 'Failed';
+p_status_msg := 'Invalid Term Code';
+end if;
+end if;
+v_level := f_get_level(level_code);
+if level_code is not null then
+if v_level is null then
+p_status := 'Failed';
+p_status_msg := 'Invalid Level Code';
+end if;
+end if;
+if student_id is not null and term_code is not null then
+if v_pidm = 0 and v_term is null then
+p_status := 'Failed';
+p_status_msg := 'Invalid Student Id, Term Code';
+end if;
+end if;
+if student_id is not null and level_code is not null then
+if v_pidm = 0 and v_level is null then
+p_status := 'Failed';
+p_status_msg := 'Invalid Student Id, Level Code';
+end if;
+end if;
+if term_code is not null and level_code is not null then
+if v_term is null and v_level is null then
+p_status := 'Failed';
+p_status_msg := 'Invalid Term Code, Level Code';
+end if;
+end if;
+if student_id is not null and term_code is not null and
+level_code is not null then
+if v_pidm = 0 and v_term is null and v_level is null then
+p_status := 'Failed';
+p_status_msg := 'Invalid Student Id, Term Code and Level Code';
+end if;
+end if;
+end;
+end pkg_academic_history_validation;
+/
+ 
+Testing From Database: For Invalid StudentId:
+Testing for Invalid Term code:
+Invalid Level Code:
+Invalid Student Id, Term Code and Level Code:
+Conclusion: Created an API using the above package to validate the input parameters.
+
