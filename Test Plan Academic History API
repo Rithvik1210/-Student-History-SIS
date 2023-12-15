@@ -1,0 +1,152 @@
+Objective:
+The goal of this documentation is to explicitly explain a test plan in order to make the process more understandable.
+Tools Required:
+Illuminate Access
+Postman Access
+Ellucian Access
+Database Access
+Open VPN
+Confluence Access
+Snipping Tool
+The following APIs are being tested:
+Validate the input parameters for academic history - validateAcademicHistoryInput_V615
+Student's demographic information - getStudentDemographicInfo_V6142
+Term GPA - getTermGPAHistory_V615
+Student's Level GPA History - getStudentLevelGPAHistory_V614
+Academic course history details - getAcademicCourseHistory_V63
+Transfer Courses History - getTransferCourseHistory_V614
+Academic History - getacademichistoryphase2_v15
+Load Academic Master Details - loadAcademicMasterDetails
+Load Demographic Details - loadDemographicDetails
+Load Term GPA Details- loadTermGPADetails
+Load Level GPA Details - Loadlevelgpadetails
+Load Academic Courses Details - loadAcademicCoursesDetails
+Load Transfer Courses - loadTransferCourses
+Get And Load Academic History - getandloadacademichistoryphase2_v616
+Testing in Illuminate
+Pick any one API
+Identify the functionality of that API
+Identify the inputs for that API
+Identify the expected response
+Pick one student ID which has all the relevant data
+Pass the inputs in the body by changing them randomly
+Observe the response body
+Check if response body is returning any duplicates
+Check for the API response time
+Validate the data in the database by querying the SQL and comparing the data in Illuminate response
+Positive Testing:
+Given Inputs are student id, term code, and level code
+Enter all the inputs and check the data
+Enter term code along with student id and check the data
+Enter level code along with student id and check the data
+Enter only student id
+Enter only term code
+Enter only level code
+Pass no inputs
+Negative Testing:
+Pass incorrect student id
+Pass incorrect term code
+Pass incorrect level code
+Pass correct student id and incorrect level code
+Pass correct student id and incorrect term code
+Pass correct Term code and incorrrect student id
+Pass correct term code and incorrect level code
+Pass correct level code and incorrect student id
+Pass correct level code and incorrect term code
+Modify the input body by removing or adjusting " " , { } , etc
+Pass lower case in level code
+Pass student id in place of term code and vice versa
+Check if we are getting error messages accordingly
+Testing in Database:
+Identify the number of tables in a whole query
+Pick one student ID
+Query each table with that specific student id
+Query all the tables and find the relation between them / Identify the conditions
+Join the tables ( first two, three, etc)
+Validate the data and the number of fields
+Run the whole query
+Validate the data and the number of fields
+Change the inputs in the query and cross verify if the data is populating or not
+Check if we are getting any duplicates
+Testing in Postman
+The following APIs are being tested in Postman:
+Student's demographic information - validate Academic History Input
+Term GPA - get Term GPA History
+Student's Level GPA History - get Student Level GPA History
+Academic course history details - get Academic Course History
+Transfer Courses History - get Transfer Course History
+Academic history - get academic history
+Get And Load Academic History - get and load academic history phase 2
+The steps to follow when testing in the PostMan are:
+Open PostMan and select Environment as Dominators Phase-2 and Collection as Dominators Phase-2
+Open an Excel Sheet in parallel to record your findings.
+Let the column names in Excel Sheet be TestCaseID, API Name, Method Name, TC Description, Input Parameters, Response Body, Status Code, Status, Error Message, and Solution If Errored Out.
+It is important to run the Auth before we start testing any of these APIs.
+
+
+Positive Testing:
+Pass all Valid Inputs
+Pass term code along with student id and check the data
+Pass level code along with student id and check the data
+Pass level code along with student id and check the data
+Pass only Student Id Input
+Pass only Term Code Input
+Pass only Level Code Input
+Pass no inputs
+Negative Testing:
+Pass incorrect Student Id Input
+Pass incorrect Term Code Inputs
+Pass incorrect Level Term Code Inputs
+Pass Valid student id and incorrect level code
+Pass Valid student id and incorrect term code
+Pass Valid Term code and incorrrect student id
+Pass Valid Term code and incorrect level code
+Pass Valid level code and incorrect student id
+Pass Valid level code and incorrect term code
+Pass lower case in level code
+Pass student id in place of term code and vice versa
+Pass student id in place of level code and vice versa
+Pass Term Code in place of Level code and vice versa
+ 
+Testing in Banner Ellucian:
+The following APIs are being tested in Illuminate:
+Student's demographic information - getStudentDemographicInfo_V6142
+Term GPA - getTermGPAHistory_V615
+Student's Level GPA History - getStudentLevelGPAHistory_V614
+Academic course history details - getAcademicCourseHistory_V63
+Transfer Courses History - getTransferCourseHistory_V614
+The following forms are checked in Ellucian and compared to the results found in Illuminate for each Test Case pattern:
+SPAIDEN - General Person Identification
+SGASTDN - General Student
+SHAINST - Student Term Course Maintainance
+SHATRNS - Transfer Course information
+SHACRSE - Course Summary
+SFAREGS - Student Course Registration
+The steps to follow when testing in the Banner Ellucian are:
+Enter the API name that needs to be tested and create Test Cases
+ For each Test Case mention the Parameters, Expected Output and the Response Body
+Illuminate Testing:
+
+ https://docs.google.com/spreadsheets/d/1Nqw8gJeZKUIU8o_1cTxXORGWuN3ZhAfluV8gzTbdDys/edit#gid=1066179527
+Banner Ellucian Testing:
+Make sure that we are connected to OpenVPN before attempting to access the Ellucian Banner website.
+Go to the Form Page by entering the Form Name in the Navigation Page.
+Enter the same Test Case as in Illuminate and press the "Go" button.
+By analyzing the Page/Form, we may compare our findings to those discovered on Illuminate.
+Take screenshots of your findings, highlight the found results, and paste them into the Confluence Page.
+Next we need to see if the results are exactly the same in the database, therefore we use the queries from the page below.
+https://n2nservices.atlassian.net/wiki/spaces/KBTRAIN/pages/3464463036
+
+Testing Using Views:
+SELECT * FROM AS_ACADEMIC_HISTORY_SUMMARY;
+SELECT * FROM AS_ACADEMIC_HISTORY_DETAIL;
+These are the two views that return standard data.
+Understand the data populating from those views.
+Pick SQL queries.
+Run individual queries for particular student ID.
+Compare the data and check whether duplicates are getting populated.
+ 
+ 
+ 
+ 
+
