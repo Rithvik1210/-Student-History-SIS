@@ -1,0 +1,28 @@
+Objective:
+To test out the below APIs
+Validate the input parameters for academic history- validateAcademicHistoryInput_
+Student's demographic information- getStudentDemographicInfo_V6142
+Term GPA Details- getTermGPAHistory_V615
+Student's Level GPA History- getStudentLevelGPAHistory_V614
+Academic course history details- getAcademicCourseHistory_V63
+Transfer Courses History- getTransferCourseHistory_V614
+Internal IDW- getacademichistoryphase2_v15
+Final IDW- getandloadacademichistoryphase2_v616
+Tools Required:
+Illuminate Access
+Ellucian Access
+Open VPN
+Confluence Access
+Snipping Tool
+PostMan
+[  Red - Input Fields,  Yellow- Output Fields ]
+ 
+Pre-requisites to test APIs in Postman:
+Postman Access
+Workspace: Team WorkSpace
+Collection: Dominators Phase-2
+Environment: Dominators Phase-2
+Authorization : v1/auth
+Postman URL: Postman URL
+Postman Test Cases Documentation : Postman Testing
+
