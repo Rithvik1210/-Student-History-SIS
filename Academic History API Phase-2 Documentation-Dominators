@@ -1,0 +1,241 @@
+Database Development-Academic History API Phase 2
+API Documentation Phase-2
+Test Plan Academic History API Phase-2
+Unit Test Documentation- Academic History API Phase 2
+Testing APIs-Academic History API Phase 2
+Test Scripts Documentation - Academic History API Phase 2
+Name
+Academic History API Phase-2
+Executive Sponsor
+Kiran Kodithala
+Start Date
+June 9 , 2023,
+End Date
+June 19, 2023
+ClickUp Project Link
+https://app.clickup.com/t/8684uj1fr - Connect your ClickUp account
+Academic History Phase 1 details
+Academic History API Phase-1 Documentation-Dominators
+
+Executive Summary
+Understanding of Academic History
+In a database, the term "academic history" typically refers to a section or table that stores and maintains a student's academic records and educational progress throughout their enrollment at an educational institution. It serves as a comprehensive record of a student's courses, grades, credits, degrees, and other relevant academic information.
+The Academic History table in a banner database may include the following fields or attributes:
+Student ID: A unique identifier for each student
+Course Code: The code or identifier assigned to each course
+Course Title: The title or name of the course
+Term/Session: The specific academic term or session in which the course was taken.
+Grade: The grade or evaluation received by the student for the course
+Credit Hours: The number of credit hours assigned to the course
+GPA: The grade point average is calculated based on the student's grades and credits earned.
+Degree Program: The specific degree program in which the student is enrolled
+Degree Earned: Indicates whether the student has completed and earned a degree.
+Date of Completion: The date when the degree was awarded or completed
+Academic Standing: The student's standing or status based on their academic performance (e.g., good standing, probation, suspension)
+The academic history data within a banner database is vital for various administrative and academic purposes, such as advising students, generating official transcripts, evaluating degree progress, and assessing eligibility for academic honors or financial aid. It provides a comprehensive snapshot of a student's academic journey and allows institutions to track their academic achievements and progress over time.
+Background
+N2N Services Inc., headquartered in Atlanta, Georgia, focuses on creating innovative technology solutions for the education sector. The company offers a range of services and platforms that facilitate data integration, application development, and analytics for educational institutions.
+Services and Solutions:
+Integration Platform:
+Application Development:
+Data Analytics and Reporting:
+Managed Services:
+Clients and Partnerships: N2N Services Inc. serves a diverse range of educational institutions, including universities, colleges, K–12 schools, and education service providers. Their clients may span public and private institutions across the United States.
+The company also collaborates with other technology providers, educational organizations, and industry partners to deliver comprehensive solutions. These partnerships help enhance their offerings and ensure compatibility with various systems and platforms.
+Innovation and Industry Recognition: N2N Services Inc. has been recognized for its innovative solutions and contributions to the education technology industry. The company actively participates in industry events, conferences, and collaborations to stay at the forefront of advancements in educational technology.
+Cost
+5000 $
+Time
+Stages
+Start
+End
+1 Planning
+June 10 , 2023
+June 12, 2023
+2 Designing
+June 12, 2023
+June 16, 2023
+3 Execution
+June 16, 2023
+June 19, 2023
+
+Stakeholders
+Name
+Title
+Email
+Kiran Kodithala
+Client
+kiran@n2nservices.com
+Yogita Akiri
+PM
+yogita.akiri@socrateslabs.com
+Tirupathi Taminenni
+API Developer
+tirupati.tammineni@socrateslabs.com
+Lasya Mayuri
+QA and Documentation
+lasya.vemaraju@socrateslabs.com
+Rithvik Koditala
+QA and Documentation
+rithvik.koditala@socrateslabs.com
+
+Meet the team:
+ 
+Yogita Akiri
+ 
+Tammineni Tirupathi Rao
+ 
+vemaraju lasya mayuri
+ 
+K Sai Rithvik
+rithvik.koditala@socrateslabs.com
+Scope of Work
+Expectation
+Enhancing the existing Academic History API with new features
+Academic History API Phase-1 Documentation-Dominators
+Using Term Code or Level Code as Input Parameters: We would like to introduce the ability to utilize Term Code or Level Code as additional input parameters in the request body. This enhancement will provide more flexibility and precision in filtering and retrieving data from the API, aligning it more closely with your specific requirements.
+Updating PL/SQL query in pascal code
+Ordering Entities in the Illuminate Response Body: To improve the clarity and ease of interpretation of the API responses, we propose to reorganize the entities in the Illuminate Response Body in a logical order. By presenting the entities in a structured manner, it will enhance the user experience and facilitate better comprehension of the data retrieved from the API.(Demographic Information, Transfer GPA, Level GPA, Institutional courses, Transfer Courses)
+Generating Insert scripts based on the input parameters to load academic history data into staging tables
+Out of Scope
+The following functionalities are out of scope for an Academic History API:
+Course registration: APIs related to the process of enrolling in courses or managing class schedules are separate from an Academic History API.
+Learning management systems: APIs specifically dedicated to delivering educational content, managing assignments, or facilitating online learning activities are not part of an Academic History API.
+Financial transactions: Handling payment processing, such as tuition fees or course payments, is outside the scope of an Academic History API.
+Academic advising: Providing personalized academic guidance or counseling services to students is beyond the scope of an Academic History API.
+Alumni services: APIs or functionalities related to alumni networks, career services, or post-graduation activities are not considered part of academic history and may be separate from an Academic History API.
+Dependencies
+Illuminate
+IIG
+Confluence
+ClickUp
+Postman
+Github
+Oracle Sandbox
+Banner
+DB Diagram( DB design)
+Canva (For designing )
+Academic History API Phase-1 Documentation-Dominators
+Flow Chart: Data model
+External Database table structure
+Gantt Chart Academic History API Phase 2
+ 
+Gantt Chart for Academic History API Phases 1 and 2
+Team Members
+Role
+Name
+Responsibilities
+Project Manager
+Yogita Akiri
+
+Project Planning: Define project goals, objectives, and scope. Create a detailed project plan outlining tasks, timelines, and resource requirements. Identify key milestones and deliverables.
+Requirement Analysis: Collaborate with stakeholders, such as API users, developers, and academic institutions, to understand their needs and gather requirements for new features. Analyze existing system functionalities and identify gaps.
+Feature Prioritization: Prioritize the identified features based on their importance, feasibility, and impact. Work closely with stakeholders to ensure alignment and consensus on feature priorities.
+Team Management: Build and lead a cross-functional team of developers, designers, testers, and other relevant roles. Assign tasks, provide guidance, and ensure effective collaboration within the team.
+Communication: Maintain open and regular communication channels with stakeholders, keeping them informed about project progress, updates, and any changes in requirements. Facilitate effective communication within the team as well.
+Risk Management: Identify potential risks and develop strategies to mitigate them. Monitor and assess project risks throughout the project lifecycle. Implement contingency plans when necessary.
+Resource Management: Optimize resource allocation to ensure efficient use of available personnel, budget, and infrastructure. Coordinate with relevant departments or external vendors to secure necessary resources.
+Quality Assurance: Define quality standards and ensure that the new features are thoroughly tested and meet the required quality benchmarks. Conduct regular reviews and inspections to identify and address any issues or defects.
+Change Management: Manage change requests and evaluate their impact on project scope, timeline, and resources. Implement a change control process to track and incorporate approved changes effectively.
+Documentation: Ensure comprehensive documentation of project requirements, design specifications, and development processes. Create user manuals, API documentation, and any other necessary documentation for end-users.
+Stakeholder Management: Foster strong relationships with stakeholders, addressing their concerns, and seeking their feedback. Keep them engaged and involved throughout the project lifecycle.
+Project Evaluation: Conduct project reviews to assess the overall success of the project. Gather feedback from stakeholders and identify areas for improvement. Capture lessons learned for future projects.
+API Developer
+Tirupati Tammineni
+
+Requirement Analysis: Collaborate with the project manager and stakeholders to understand the requirements for new features. Analyze the existing API functionalities and identify areas for improvement.
+Design and Development: Design, develop, and implement new features for the academic history API. This includes writing code, creating API endpoints, and integrating new functionalities into the existing system.
+API Documentation: Create or update comprehensive documentation for the API, including endpoints, request/response formats, authentication mechanisms, and usage examples. Ensure that the documentation is accurate, up-to-date, and easily accessible.
+Testing and Quality Assurance: Conduct thorough testing of the enhanced API to ensure its reliability, functionality, and performance. Write unit tests, integration tests, and system tests. Identify and fix any bugs or issues.
+API Security: Implement appropriate security measures for the API, such as authentication, authorization, and encryption, to protect sensitive data and ensure secure access to the API.
+Performance Optimization: Optimize the API's performance by analyzing and improving response times, minimizing resource utilization, and implementing caching mechanisms where applicable.
+Version Control and Release Management: Use version control systems like Git to manage code changes effectively. Collaborate with the project manager and DevOps team to plan and coordinate API releases and deployments.
+Collaboration and Communication: Collaborate with other developers, project managers, and stakeholders to ensure alignment and effective communication throughout the development process. Provide regular updates on progress and seek feedback when needed.
+Troubleshooting and Support: Assist in troubleshooting and resolving issues reported by API users. Provide technical support and guidance to API users and other developers integrating with the API.
+Continuous Learning and Improvement: Stay updated with the latest industry trends, best practices, and technologies related to API development. Continuously improve coding skills and share knowledge within the development team.
+QA and Post go-live support
+Lasya Mayuri & Rithvik Koditala
+Requirement Analysis: Collaborate with the project manager, API developer, and stakeholders to understand the requirements for new features and changes. Analyze the existing system functionalities and identify areas for testing.
+Test Planning: Develop a comprehensive test plan that outlines the testing approach, test objectives, test coverage, and test deliverables. Define the test scenarios, test cases, and test data needed to validate the new features.
+Test Design: Design test cases and test scenarios to cover the functional and non-functional requirements of the enhanced API. Consider different use cases, edge cases, and potential failure scenarios.
+Test Execution: Execute test cases, either manually or using automated testing tools, to validate the functionality, performance, security, and usability of the API. Record the test results and document any issues or defects found.
+Regression Testing: Conduct regression testing to ensure that existing functionalities of the API have not been affected by the enhancements. Re-run previously executed test cases to verify the stability and compatibility of the API.
+Compatibility Testing: Test the API's compatibility with different platforms, browsers, operating systems, and devices that are relevant to the target users. Verify that the API works as expected across various environments.
+Performance Testing: Conduct performance testing to evaluate the API's response times, throughput, scalability, and resource utilization under expected and peak loads. Identify and address any performance bottlenecks.
+Security Testing: Perform security testing to identify vulnerabilities, potential data breaches, and unauthorized access points. Test authentication mechanisms, encryption protocols, and other security features.
+Documentation: Review and contribute to the API documentation, including test cases, test plans, and test reports. Ensure that the documentation accurately reflects the testing activities and results.
+Collaboration and Communication: Collaborate closely with the project manager, API developers, and other team members to understand the changes and effectively communicate testing progress, issues, and risks. Participate in regular project meetings and provide input when required.
+Defect Management: Report and track defects using a defect tracking system. Work with the development team to investigate and resolve issues. Verify fixes and retest to ensure that defects have been addressed.
+Continuous Improvement: Identify areas for process improvement and suggest enhancements to testing methodologies, tools, and frameworks. Continuously update skills and knowledge in testing practices, tools, and industry trends.
+
+Phases 2 and Stages
+No.
+Name
+Date
+Description
+1
+Planning
+June 10, 2023 to June 12, 2023
+
+Requirement Gathering: This involves understanding the needs and goals of the project stakeholders, including clients, users, and other relevant parties. The requirements are documented, and any existing systems or APIs that need to be integrated are identified.
+Project Scope Definition: The scope of the API project is clearly defined, outlining the functionalities, features, and limitations of the API. This includes identifying the target audience, determining the supported platforms and technologies, and specifying any specific performance or security requirements.
+API Design and Architecture: The high-level design and architecture of the API are established during the planning stage. This includes defining the API endpoints, data models, request/response formats, and authentication mechanisms. Considerations for scalability, extensibility, and maintainability are taken into account.
+Technology Stack Selection: The planning stage involves selecting the appropriate technology stack for implementing the API. This includes determining the programming languages, frameworks, libraries, and tools that best suit the project requirements and align with the organization's technology ecosystem.
+Resource Allocation: The required resources for the API development project are identified and allocated. This includes assigning roles and responsibilities to team members, estimating the required development time and effort, and securing any necessary resources, such as hardware or software licenses.
+Project Timeline and Milestones: A project timeline is established, outlining the major milestones, deliverables, and deadlines for the API development project. This helps in setting clear expectations and managing the progress of the project.
+Risk Assessment and Mitigation: Potential risks and challenges that may impact the successful delivery of the API project are identified and assessed. Strategies and contingency plans are developed to mitigate these risks, ensuring that potential issues are anticipated and managed proactively.
+Communication and Collaboration Plan: An effective communication and collaboration plan is created to ensure seamless coordination among team members, stakeholders, and other relevant parties. This includes establishing regular meetings, defining communication channels, and documenting communication protocols.
+Project Documentation: Documentation plays a crucial role in the planning stage. It involves creating project charters, requirements documents, technical specifications, and any other relevant documentation to provide a clear understanding of the project scope, objectives, and implementation details.
+Legal and Compliance Considerations: Depending on the nature of the API project, legal and compliance aspects, such as data privacy regulations or intellectual property rights, may need to be addressed during the planning stage. This ensures that the API development project adheres to relevant laws and regulations.
+2
+Designing
+June 12 , 2023 to June 16, 2023
+
+API Architecture: The architectural design of the API is established, including decisions regarding the overall structure and components.
+Endpoint Design: The API endpoints, which represent the various functionalities exposed by the API, are designed. T
+Data Models and Schema Design: The data models that represent the underlying data entities of the API are designed. This involves defining the attributes, relationships, and constraints of the data models.
+Request and Response Formats: The formats for API requests and responses are determined. This includes specifying the data serialization format (such as JSON or XML), defining the structure of the payload, and considering any additional metadata or headers that need to be included.
+Error Handling: Designing how errors and exceptions are handled by the API is crucial. This includes defining error response formats, status codes, and error messages to provide meaningful information to API consumers when issues occur.
+Authentication and Authorization: The design of the authentication and authorization mechanisms is established to ensure secure access to the API.
+Documentation: Comprehensive documentation is created during the design phase. This includes documenting the API endpoints, data models, request/response formats, authentication methods, and any other relevant information that API consumers will need to effectively use the API.
+Versioning and Backward Compatibility: If required, the design should consider versioning strategies for the API to ensure backward compatibility as the API evolves over time.
+Security Considerations: Security aspects are addressed in the design phase. This includes identifying potential security risks and implementing measures to mitigate them, such as input validation, output encoding, and encryption of sensitive data.
+Performance and Scalability: Designing for performance and scalability is crucial to ensuring that the API can handle expected loads and growth. Considerations may include caching strategies, optimizing database queries, and employing scalable infrastructure.
+3
+Execution
+June 16, 2023 to June 19, 2023
+
+Coding and Development: The development team starts writing code to implement the API based on the design specifications. This involves programming the API endpoints, implementing data models, integrating with external systems or databases, and incorporating any additional functionality or business logic required.
+Version Control: The use of a version control system, such as Git, is important during the execution phase. Developers commit their code changes, track revisions, and collaborate effectively. This ensures that the codebase is well managed and that any changes can be rolled back if needed.
+Testing: Comprehensive testing is performed during the execution phase to verify the functionality, performance, and reliability of the API. This includes various types of testing, such as unit testing, integration testing, functional testing, and performance testing. Test cases are executed to validate the API's behavior and ensure it meets the defined requirements.
+Bug Fixing: As testing uncovers issues and defects, the development team addresses them through bug fixing. Bugs are identified, prioritized, and resolved to improve the quality and stability of the API. The process involves debugging, root cause analysis, and implementing necessary fixes.
+Documentation: The documentation created during the design phase is updated and expanded as needed during the execution phase. This includes documenting any changes or updates made to the API, providing clear instructions on API usage, and documenting any known issues or limitations.
+Security and Authentication: The implementation of security measures, such as encryption, authentication, and authorization, is executed during this phase. The necessary security protocols, mechanisms, and best practices are implemented to protect the API and ensure secure access.
+Performance Optimization: The development team focuses on optimizing the API's performance during the execution phase. This may involve implementing caching mechanisms, optimizing database queries, improving code efficiency, and utilizing appropriate infrastructure and resources to ensure optimal response times and scalability.
+Deployment and Integration: Once the API is thoroughly tested and deemed ready for production, it is deployed to the target environment. This involves setting up the necessary infrastructure, configuring servers, and integrating the API with other systems or applications as required.
+Monitoring and Troubleshooting: After deployment, the API is closely monitored to ensure its proper functioning. Monitoring tools and techniques are used to track performance metrics, detect anomalies, and proactively address any issues that may arise. The development team is responsible for troubleshooting and resolving any production issues that occur.
+Continuous Integration and Delivery (CI/CD): Where applicable, CI/CD practices are followed to automate the build, testing, and deployment processes. This ensures efficient and rapid delivery of updates and enhancements to the API while maintaining the quality and stability of the system.
+
+Challenges
+The Phase 1 API was not working due to a loading issue.
+Created New API’s & IDW
+Bugs in IDW (Split Configuration, Server Error, response loading and Data Mapping)
+We are updating the API to load only the first 100 records due to limitations in retrieving more data.
+Expected Output/Final Response
+response_only_levelcode_ED.json
+20 Jun 2023, 09:21 PM
+response_only_termcode_201020.json
+20 Jun 2023, 09:21 PM
+response_studentid_leve_termcode_V620.json
+20 Jun 2023, 09:21 PM
+response_studentid_termcode_V620.json
+20 Jun 2023, 09:21 PM
+response_studentid_levelcode_v620.json
+20 Jun 2023, 09:21 PM
+response_only_studentid620_N00015478.json
+20 Jun 2023, 09:21 PM
+Phase 3
+Academic History API update to get and load all the records available.
+Conclusion
+The project documentation for Academic History API creation using the Banner database provides a clear roadmap, responsibilities, and deliverables, ensuring successful implementation and deployment while meeting the client's requirements and expectations.
+
